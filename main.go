@@ -14,4 +14,6 @@ func main() {
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("everything is up")
 	})
+
+	app.Listen(":3344")
 }
