@@ -2,19 +2,28 @@ package repository
 
 import (
 	"github.com/shimodii/ecommerce-backend/entities"
-	"gorm.io/driver/postgres"
+	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
+type DbInstance struct {
+    Db *gorm.DB
+}
 
-func InitDatabase(){
-    dsn := "host=localhost user=postgres password=pgpass dbname=ecommerce port=5432 sslmode=disable"
-    db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+var Database DbInstance
+
+func OpenDatabase(){
+    db, err := gorm.Open(sqlite.Open("database.db"), &gorm.Config{})
     if err != nil {
-        panic("database is fucked up dude")
+        panic("databased failed to open!")
     }
-    
-    println("database connected")
 
-    db.AutoMigrate(&entities.User{}, &entities.Product{}, &entities.Cart{})
+    db.AutoMigrate(&entities.Product{})
+    db.AutoMigrate(&entities.Cart{})
+    db.AutoMigrate(&entities.User{})
+
+    Database = DbInstance{
+        Db: db,
+    }
+
 }
