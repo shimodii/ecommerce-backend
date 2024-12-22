@@ -3,9 +3,10 @@ package middleware
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
+	"github.com/shimodii/ecommerce-backend/config"
 )
 
-var jwtKey = []byte("mySecret")
+var jwtKey = config.GetSecret() 
 
 func AdminMiddleware(c *fiber.Ctx) error {
 	tokenString := c.Get("Authorization")[7:] // Remove "Bearer "
